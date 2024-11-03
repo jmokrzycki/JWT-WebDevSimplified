@@ -1,0 +1,26 @@
+GET http://localhost:3000/posts
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoidXNlcjEiLCJpYXQiOjE3MzA2NTU3NDksImV4cCI6MTczMDY1NTc2OX0.kzgV5KJ3jg94mutigMPYqJrmLb2BmahzeYD4ou_csiI
+
+###
+
+POST http://localhost:4000/token
+Content-Type: application/json
+
+{
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoidXNlcjEiLCJ0ZXN0IjoidGVzdCIsImlhdCI6MTczMDY1NTcxM30.npXZKJWSy1oKZj7yKs4-HB1hakXNisY5cBAwuqh30Z4"
+}
+
+###
+
+POST http://localhost:4000/login
+Content-Type: application/json
+
+{
+    "username": "user1"
+}
+
+### Flow:
+# 1. POST http://localhost:4000/login (copy accesToken to GET http://localhost:3000/posts, copy refreshToken to POST http://localhost:4000/token)
+# 2. GET http://localhost:3000/posts, after 20s the token will expire
+# 3. POST http://localhost:4000/token (copy refreshToken to GET http://localhost:3000/posts)
+# 4. GET http://localhost:3000/posts works again
