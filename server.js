@@ -19,7 +19,7 @@ const posts = [
 ]
 
 app.get('/posts', authenticateToken, (req, res) => {
-     // req.user => { name: username, test: 'test', iat: 1730593548 } (claims)
+     // req.user => { name: username, test: 'test', iat: 1730593548 } (payload with claims)
      // req comes from middleware authenticateToken
     res.json(posts.filter(post => post.username === req.user.name));
 });
@@ -27,7 +27,7 @@ app.get('/posts', authenticateToken, (req, res) => {
 app.post('/login', (req, res) => {
     // usually check username and password (not in this)
     const username = req.body.username
-    const user = { name: username, test: 'test' } // test param for example (claims)
+    const user = { name: username, test: 'test' } // test param for example (payload with claims)
 
     // generate token
     const accessToken = jwt.sign(user, process.env.ACCESS_TOKEN_SECRET);
@@ -47,7 +47,7 @@ function authenticateToken(req, res, next) {
     // if verified return user    
     jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, user) => {
         if (err) return res.sendStatus(403)
-        req.user = user // { name: username, test: 'test', iat: 1730593548 } (claims)
+        req.user = user // { name: username, test: 'test', iat: 1730593548 } (payload with claims)
         next()
     })
 }

@@ -17,7 +17,7 @@ app.post('/token', (req, res) => {
     if (refreshToken == null) return res.sendStatus(401)
     if (!refreshTokens.includes(refreshToken)) return res.sendStatus(403)
     
-    // if verified return new access token (user is claims)    
+    // if verified return new access token (user is payload with claims)    
     jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET, (err, user) => {
         if(err) return res.sendStatus(403)
         const accessToken = generateAccessToken({ name: user.name })
@@ -28,7 +28,7 @@ app.post('/token', (req, res) => {
 app.post('/login', (req, res) => {
     // usually check username and password (not in this)
     const username = req.body.username
-    const user = { name: username, test: 'test' } // test param for example (claims)
+    const user = { name: username, test: 'test' } // test param for example (payload with claims)
 
     // generate token
     const accessToken = generateAccessToken(user)
